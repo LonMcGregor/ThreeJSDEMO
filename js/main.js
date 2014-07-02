@@ -1,6 +1,6 @@
 // init variables
 var scene, camera, renderer;
-var cube, bluCube, redCube;
+var cube, bluCube, redCube, floor, light1;
 
 //create scene
 function init(){
@@ -25,7 +25,6 @@ function bigCube(colorVal, posVal){
 	var geometry = new THREE.BoxGeometry(2,2,2);
 	var material = new THREE.MeshBasicMaterial( { color: colorVal } );
 	var cubeObj = new THREE.Mesh( geometry, material );
-	//scene.add( cubeObj );
 	cubeObj.position.x = posVal;
 	return cubeObj;
 }
@@ -36,6 +35,25 @@ function makeBigCubes(){
 	redCube = new bigCube(0xff0000, -3);
 	scene.add(bluCube);
 	scene.add(redCube);
+	bluCube.material.wireframe = true;
+	redCube.opacity = 0.7;
+	redCube.transparent = true;
+}
+
+//make a floor
+function makeFloor(){
+	var geometry = new THREE.PlaneGeometry(20,5);
+	var material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+	floor = new THREE.Mesh( geometry, material );
+	scene.add(floor);
+	floor.position.z = -3;
+	floor.rotateX(-0.5);
+}
+
+//make a lightsource
+function makeLight(){
+	light1 = new THREE.HemisphereLight(0x0000dd, 0x000000, 0.5);
+	scene.add(light1);
 }
 
 //do the math
@@ -57,4 +75,6 @@ function rotateCube(cubeObj, rotVal0, rotVal1){
 init();
 makeCube();
 makeBigCubes();
+makeFloor();
+makeLight();
 render();
